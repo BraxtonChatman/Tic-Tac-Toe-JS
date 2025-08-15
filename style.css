@@ -1,3 +1,7 @@
+body{
+    padding: 50px;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -11,6 +15,9 @@
     border: 1px solid black;
     width: 50px;
     height: 50px;
+    font-size: 60px;
+    line-height: 40px;
+    text-align: center;
 }
 
 .clicked1{
@@ -19,4 +26,8 @@
 
 .clicked2{
     background: blue;
+}
+
+#resetButton{
+    margin-top: 15px;
 }

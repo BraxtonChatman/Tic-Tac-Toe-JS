@@ -59,15 +59,36 @@ function createGameboard(){
 
     const printBoard = function(){console.log(board);};
 
-    return {setPosition, printBoard, isGameOver, getWinner};
+    const clearBoard = function(){
+        for(let i=0; i<9; i++){
+            board[i] = "";
+        }
+        winner = "";
+        spacesFilled = 0;
+        gameOver = false;
+    }
+
+    return {setPosition, printBoard, isGameOver, getWinner, clearBoard};
 }
 
 function createGame(){
     const gameboard = createGameboard();
     const gameboardUI = document.querySelectorAll(".item");
+    const resetButton = document.querySelector("#resetButton");
+    const gameOverMessage = document.createElement("h2");
     const players = [createPlayer(1, "x"), createPlayer(2, "o")];
     let playerTurn = 0;
     let currentPlayer = players[playerTurn];
+
+    resetButton.addEventListener("click", ()=>{
+        gameboard.clearBoard();
+        gameboardUI.forEach((item)=>{
+            item.classList.remove(players[0].getTileClass());
+            item.classList.remove(players[1].getTileClass());
+            item.textContent = "";
+            gameOverMessage.textContent = "";
+        })
+    });
 
     gameboardUI.forEach((item)=>{
         item.addEventListener("click", tileListener)
@@ -80,15 +101,20 @@ function createGame(){
             currentPlayer = players[(++playerTurn%2)];
             if(gameboard.isGameOver()){
                 let winner = gameboard.getWinner();
+
                 if(winner === ""){
                     console.log("Tie Game");
+                    gameOverMessage.textContent = "Tie Game.";
                 }
                 else if(winner === players[0].getMarker()){
                     console.log("Player 1 wins!");
+                    gameOverMessage.textContent = "Player 1 wins!";
                 }
                 else{
                     console.log("Player 2 wins!");
+                    gameOverMessage.textContent = "Player 2 wins!";
                 }
+                document.querySelector("body").appendChild(gameOverMessage);
             }
         }
     }
